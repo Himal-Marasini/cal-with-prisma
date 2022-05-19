@@ -29,6 +29,7 @@ app.get("/users", async (req, res, next) => {
 
 app.patch("/users", async (req, res, next) => {
   try {
+    // "63e66de9-2ef5-4cf6-a0ba-c58726728258"
     let isAllowed = ability.can("update", "User", "balance");
 
     if (!isAllowed) {
@@ -37,7 +38,7 @@ app.patch("/users", async (req, res, next) => {
 
     let response = await user.update({
       where: {
-        id: "0cb8aab33-c03c-4959-9519-1b5398aef9d9",
+        id: "0cb8ab33-c03c-4959-9519-1b5398aef9d9",
       },
       data: {
         balance: 1.5,
