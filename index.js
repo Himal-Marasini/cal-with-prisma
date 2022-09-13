@@ -13,7 +13,7 @@ const { accessibleBy } = require("@casl/prisma");
 app.get("/users", async (req, res, next) => {
   try {
     let response = await user.findMany({
-      where: accessibleBy(ability).User,
+      where: accessibleBy(ability).User
     });
     return res.json({ data: response });
   } catch (error) {
@@ -32,16 +32,16 @@ app.patch("/users", async (req, res, next) => {
     let isAllowed = ability.can("update", "User", "balance");
 
     if (!isAllowed) {
-      return "NOT ALLOWED";
+      return res.json({ message: "NOT ALLOWED" });
     }
 
     let response = await user.update({
       where: {
-        id: "0cb8aab33-c03c-4959-9519-1b5398aef9d9",
+        id: "627f3fe9-7f36-4bd2-9683-da454d52af90"
       },
       data: {
-        balance: 1.5,
-      },
+        balance: 1.5
+      }
     });
 
     return res.json({ data: response });
@@ -59,12 +59,12 @@ app.patch("/users", async (req, res, next) => {
 app.post("/users", async (req, res, next) => {
   let data = await user.create({
     data: {
-      email_id: "aaaabc@gmail.com",
-      username: "aaaa",
-      password: "aaaa",
+      email_id: "test1@gmail.com",
+      username: "test",
+      password: "test",
       account_type: "DISTRIBUTOR",
-      balance: 1.5,
-    },
+      balance: 1.8
+    }
   });
 
   return res.json({ success: true, data });
