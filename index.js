@@ -2,13 +2,13 @@ const express = require("express");
 const app = express();
 const { ForbiddenError } = require("@casl/ability");
 
-const { user } = require("./db");
+let { user } = require("./db");
 
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
 const ability = require("./casl.ability");
-const { accessibleBy } = require("@casl/prisma");
+const { accessibleBy, prismaQuery } = require("@casl/prisma");
 
 app.get("/users", async (req, res, next) => {
   try {
@@ -23,28 +23,33 @@ app.get("/users", async (req, res, next) => {
       return;
     }
     console.log(2);
-    // return res.json({ message: error.message });
+    return res.json({ message: error.message });
   }
 });
 
 app.patch("/users", async (req, res, next) => {
   try {
-    let isAllowed = ability.can("update", "User", "balance");
+    // let isAllowed = ability.can("update", "User", "balance");
 
-    if (!isAllowed) {
-      return res.json({ message: "NOT ALLOWED" });
-    }
+    // if (!isAllowed) {
+    //   return res.json({ message: "NOT ALLOWED" });
+    // }
 
-    let response = await user.update({
-      where: {
-        id: "627f3fe9-7f36-4bd2-9683-da454d52af90"
-      },
-      data: {
-        balance: 1.5
-      }
+    // console.log(accessibleBy(ability, "update").User);
+    console.log(accessibleBy(ability, "update", "email_id").User);
+
+    let response1 = await user.findFirst({
+      where: accessibleBy(ability, "read").User
     });
 
-    return res.json({ data: response });
+    // let response = await user.update({
+    //   where: accessibleBy(ability, "update").User,
+    //   data: {
+    //     balance: 1.5
+    //   }
+    // });
+
+    return res.json({ data: response1 });
   } catch (error) {
     if (error instanceof ForbiddenError) {
       console.log(1);

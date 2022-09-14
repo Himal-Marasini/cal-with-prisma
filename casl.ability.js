@@ -3,7 +3,7 @@ const { PrismaAbility } = require("@casl/prisma");
 
 const { can, cannot, build } = new AbilityBuilder(PrismaAbility);
 
-can("read", "User", { balance: 1.5 });
+can("read", "User", ["username"], { balance: 1.5 });
 
 // cannot("read", "Post", { title: { startsWith: "[WIP]:" } });
 
@@ -21,7 +21,7 @@ const a = new PrismaAbility([
     action: "update",
     subject: "User",
     fields: ["username"],
-    conditions: { id: "0cb8ab33-c03c-4959-9519-1b5398aef9d9" },
+    conditions: { id: "c78777bf-8fe8-4aed-bde6-f83819724e7d" },
     reason: "You are not allowed to update."
   }
 ]);
